@@ -39,5 +39,8 @@ RUN Rscript -e \
     pak::pkg_install(pkgs);'
 RUN Rscript -e \
     'pkgs <- c("CoreGx", "PharmacoGx", "Biobase", "SummarizedExperiment", \
-    "illuminaHumanv4.db"); \
+    "illuminaHumanv4.db", "GEOquery"); \
+    pak::pkg_install(pkgs);'
+RUN Rscript -e \
+    'pkgs <- c("readxl", "GEOquery"); \
     pak::pkg_install(pkgs);'
