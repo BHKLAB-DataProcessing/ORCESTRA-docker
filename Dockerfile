@@ -42,5 +42,9 @@ RUN Rscript -e \
     "illuminaHumanv4.db", "GEOquery"); \
     pak::pkg_install(pkgs);'
 RUN Rscript -e \
-    'pkgs <- c("readxl", "GEOquery"); \
+    'pkgs <- c("readxl", "stringr"); \
     pak::pkg_install(pkgs);'
+RUN Rscript -e \
+    'pkgs <- c("MultiAssayExperiment", "Biobase"); \
+    pak::pkg_install(pkgs);'
+RUN Rscript -e 'BiocManager::install("biomaRt")'
