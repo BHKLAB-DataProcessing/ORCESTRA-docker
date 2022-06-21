@@ -48,3 +48,4 @@ RUN Rscript -e \
     'pkgs <- c("MultiAssayExperiment", "Biobase"); \
     pak::pkg_install(pkgs);'
 RUN Rscript -e 'BiocManager::install("biomaRt")'
+RUN Rscript -e 'BiocManager::install(c("GenomicRanges", "org.Hs.eg.db"))'
