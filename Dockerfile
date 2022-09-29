@@ -29,6 +29,9 @@ RUN add-apt-repository \
     $(lsb_release -cs)-cran40/"
 RUN apt-get update -y && apt-get upgrade -y
 RUN apt-get install -y r-base
+
+RUN apt-get install -y cmake
+
 # Install R libraries
 RUN Rscript -e \
     'install.packages("pak", dependencies=TRUE, ask=FALSE);'
@@ -49,3 +52,22 @@ RUN Rscript -e \
     pak::pkg_install(pkgs);'
 RUN Rscript -e 'BiocManager::install("biomaRt")'
 RUN Rscript -e 'BiocManager::install(c("GenomicRanges", "org.Hs.eg.db"))'
+RUN apt-get update -y
+RUN apt-get install -y \
+    libcairo2-dev \
+    libxt-dev \
+    libharfbuzz-dev \
+    libfribidi-dev \
+    libtiff-dev \
+    libsqlite3-dev \
+    libproj-dev \
+    libgdal-dev
+RUN Rscript -e 'pak::pkg_install(c("textshaping", "Cairo", "devtools"))'
+RUN Rscript -e 'pak::pkg_install(c("BiocGenerics", "DelayedArray", "DelayedMatrixStats", \
+                    "limma", "lme4", "S4Vectors", "SingleCellExperiment", \
+                    "SummarizedExperiment", "batchelor", "Matrix.utils", \
+                    "HDF5Array", "ggrastr"))'
+RUN Rscript -e 'install.packages("terra")'
+RUN apt-get install -y libudunits2-dev
+RUN Rscript -e 'pak::pkg_install(c("units", "sf", "spdep"))'
+RUN Rscript -e 'devtools::install_github("cole-trapnell-lab/monocle3")'
