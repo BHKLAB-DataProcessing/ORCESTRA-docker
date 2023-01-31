@@ -39,17 +39,17 @@ RUN Rscript -e \
     'pak::pkg_install("BiocManager");'
 RUN Rscript -e \
     'pkgs <- c("data.table", "dplyr", "reshape2", "Hmisc"); \
-    pak::pkg_install(pkgs);'
+    install.packages(pkgs);'
 RUN Rscript -e \
     'pkgs <- c("CoreGx", "PharmacoGx", "Biobase", "SummarizedExperiment", \
     "illuminaHumanv4.db", "GEOquery"); \
-    pak::pkg_install(pkgs);'
+    BiocManager::install(pkgs);'
 RUN Rscript -e \
     'pkgs <- c("readxl", "stringr"); \
-    pak::pkg_install(pkgs);'
+    install.packages(pkgs);'
 RUN Rscript -e \
     'pkgs <- c("MultiAssayExperiment", "Biobase"); \
-    pak::pkg_install(pkgs);'
+    install.packages(pkgs);'
 RUN Rscript -e 'BiocManager::install("biomaRt")'
 RUN Rscript -e 'BiocManager::install(c("GenomicRanges", "org.Hs.eg.db"))'
 RUN apt-get update -y
@@ -63,11 +63,15 @@ RUN apt-get install -y \
     libproj-dev \
     libgdal-dev
 RUN Rscript -e 'pak::pkg_install(c("textshaping", "Cairo", "devtools"))'
-RUN Rscript -e 'pak::pkg_install(c("BiocGenerics", "DelayedArray", "DelayedMatrixStats", \
+RUN Rscript -e 'BiocManager::install(c("BiocGenerics", "DelayedArray", "DelayedMatrixStats", \
                     "limma", "lme4", "S4Vectors", "SingleCellExperiment", \
                     "SummarizedExperiment", "batchelor", "Matrix.utils", \
                     "HDF5Array", "ggrastr"))'
 RUN Rscript -e 'install.packages("terra")'
 RUN apt-get install -y libudunits2-dev
-RUN Rscript -e 'pak::pkg_install(c("units", "sf", "spdep"))'
+RUN Rscript -e 'install.packages(c("units", "sf", "spdep"))'
 RUN Rscript -e 'devtools::install_github("cole-trapnell-lab/monocle3")'
+
+# RadioGx, Xeva
+RUN Rscript -e 'install.packages(c("gdata", "parallel", "abind"))'
+RUN Rscript -e 'BiocManager::install(c("RadioGx", "Xeva"))'
