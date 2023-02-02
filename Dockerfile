@@ -73,5 +73,9 @@ RUN Rscript -e 'install.packages(c("units", "sf", "spdep"))'
 RUN Rscript -e 'devtools::install_github("cole-trapnell-lab/monocle3")'
 
 # RadioGx, Xeva
-RUN Rscript -e 'install.packages(c("gdata", "parallel", "abind"))'
-RUN Rscript -e 'BiocManager::install(c("RadioGx", "Xeva"))'
+RUN Rscript -e 'install.packages(c("gdata", "parallel", "abind", "xml2", "ggplot2"))'
+RUN Rscript -e 'BiocManager::install(c("RadioGx", "Xeva", "ToxicoGX", "affy", "affyio"))'
+RUN wget 'https://filesforpublic.blob.core.windows.net/toxicogx/hgu133plus2hsensgcdf_24.0.0.tar.gz'
+RUN wget 'https://filesforpublic.blob.core.windows.net/toxicogx/rat2302rnensgcdf_24.0.0.tar.gz'
+RUN Rscript -e "library(devtools); install.packages('hgu133plus2hsensgcdf_24.0.0.tar.gz', repos = NULL, type = 'source')"
+RUN Rscript -e "library(devtools); install.packages('rat2302rnensgcdf_24.0.0.tar.gz', repos = NULL, type = 'source')"
