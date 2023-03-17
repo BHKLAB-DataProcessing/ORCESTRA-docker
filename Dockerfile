@@ -79,3 +79,11 @@ RUN wget 'https://filesforpublic.blob.core.windows.net/toxicogx/hgu133plus2hsens
 RUN wget 'https://filesforpublic.blob.core.windows.net/toxicogx/rat2302rnensgcdf_24.0.0.tar.gz'
 RUN Rscript -e "library(devtools); install.packages('hgu133plus2hsensgcdf_24.0.0.tar.gz', repos = NULL, type = 'source')"
 RUN Rscript -e "library(devtools); install.packages('rat2302rnensgcdf_24.0.0.tar.gz', repos = NULL, type = 'source')"
+
+RUN Rscript -e "remove.packages('preprocessCore')"
+RUN Rscript -e "BiocManager::install('preprocessCore', configure.args = '--disable-threading')"
+
+RUN Rscript -e "install.packages('openxlsx', dependencies = TRUE)"
+RUN Rscript -e "install.packages(c('downloader', 'biocompute', 'matrixStats', 'curl', 'RCurl'))"
+RUN Rscript -e "BiocManager::install(c('tximport', 'rhdf5', 'RaggedExperiment'))"
+RUN Rscript -e "devtools::install_github('hadley/readr')"
