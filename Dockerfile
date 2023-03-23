@@ -1,3 +1,5 @@
+## Emacs, make this -*- mode: sh; -*-
+
 FROM snakemake/snakemake:main
 SHELL ["/bin/sh", "-c"]
 
@@ -20,6 +22,7 @@ RUN apt-get install -y \
     libsodium-dev \
     libopenblas-dev \
     libnlopt-dev
+
 # Install R using apt
 RUN apt-key adv \
     --keyserver keyserver.ubuntu.com \
