@@ -27,7 +27,8 @@ RUN apt-get update -y && apt-get upgrade -y && apt-get install -y \
     libtiff-dev \
     libsqlite3-dev \
     libproj-dev \
-    libgdal-dev
+    libgdal-dev \
+    libudunits2-dev
 
 ARG R_VERSION=4.1.3
 RUN wget https://cdn.rstudio.com/r/debian-10/pkgs/r-${R_VERSION}_1_amd64.deb && \
@@ -38,11 +39,28 @@ RUN ln -s /opt/R/${R_VERSION}/bin/R /usr/bin/R && \
     ln -s /opt/R/${R_VERSION}/lib/R /usr/lib/R
 
 RUN Rscript -e 'install.packages("BiocManager", repos = "http://cran.us.r-project.org")'
-RUN Rscript -e 'BiocManager::install(c("CoreGx", "PharmacoGx", "RadioGx", "ToxicoGx"));'
+RUN Rscript -e 'BiocManager::install(c("Biobase", "CoreGx", "PharmacoGx", "RadioGx", "ToxicoGx"));'
 RUN Rscript -e 'install.packages(c("gdata", "parallel", "abind", "xml2", "ggplot2", "devtools"), repos = "http://cran.us.r-project.org");'
 
-RUN Rscript -e \
-    'pkgs <- c("data.table", "dplyr", "reshape2", "Hmisc"); \
-    install.packages(pkgs, repos = "http://cran.us.r-project.org");'
-RUN Rscript -e 'BiocManager::install("Biobase");'
-RUN Rscript -e 'install.packages("readxl", repos = "http://cran.us.r-project.org");'
+RUN Rscript -e 'install.packages(c("data.table", "dplyr", "reshape2", "Hmisc"), repos = "http://cran.us.r-project.org");'
+RUN Rscript -e 'install.packages(c("readxl", "stringr", "textshaping", "Cairo"), repos = "http://cran.us.r-project.org");'
+RUN Rscript -e 'install.packages(c("units", "sf", "spdep", "terra"), repos = "http://cran.us.r-project.org");'
+
+RUN Rscript -e 'BiocManager::install(c("MultiAssayExperiment", "illuminaHumanv4.db", "GEOquery"));'
+RUN Rscript -e 'BiocManager::install(c("biomaRt", "GenomicRanges", "org.Hs.eg.db", "affy", "affyio"));'
+RUN Rscript -e 'BiocManager::install(c("BiocGenerics", "DelayedArray", "DelayedMatrixStats", \
+                    "limma", "lme4", "S4Vectors", "SingleCellExperiment", \
+                    "batchelor", "Matrix.utils", "HDF5Array", "ggrastr"));'
+RUN Rscript -e "BiocManager::install(c('tximport', 'rhdf5', 'RaggedExperiment'));"
+
+RUN wget 'https://filesforpublic.blob.core.windows.net/toxicogx/hgu133plus2hsensgcdf_24.0.0.tar.gz'
+RUN wget 'https://filesforpublic.blob.core.windows.net/toxicogx/rat2302rnensgcdf_24.0.0.tar.gz'
+RUN Rscript -e "library(devtools); install.packages('hgu133plus2hsensgcdf_24.0.0.tar.gz', repos = NULL, type = 'source')"
+RUN Rscript -e "library(devtools); install.packages('rat2302rnensgcdf_24.0.0.tar.gz', repos = NULL, type = 'source')"
+RUN Rscript -e 'devtools::install_github("cole-trapnell-lab/monocle3")'
+
+RUN Rscript -e "remove.packages('preprocessCore')"
+RUN Rscript -e "BiocManager::install('preprocessCore', configure.args = '--disable-threading')"
+
+RUN Rscript -e "install.packages(c('downloader', 'biocompute', 'matrixStats', 'curl', 'RCurl', 'openxlsx'), dependencies = TRUE, repos = 'http://cran.us.r-project.org')"
+RUN Rscript -e "devtools::install_github('hadley/readr')"
