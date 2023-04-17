@@ -64,3 +64,4 @@ RUN Rscript -e "BiocManager::install('preprocessCore', configure.args = '--disab
 
 RUN Rscript -e "install.packages(c('downloader', 'biocompute', 'matrixStats', 'curl', 'RCurl', 'openxlsx'), dependencies = TRUE, repos = 'http://cran.us.r-project.org')"
 RUN Rscript -e "devtools::install_github('hadley/readr')"
+RUN Rscript -e 'install.packages(c("qs", "purrr"), repos = "http://cran.us.r-project.org");'
